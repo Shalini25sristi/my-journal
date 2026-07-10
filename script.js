@@ -100,9 +100,18 @@ function getStorageKey(type, year) {
     return `myjournal_${type}_${year}`;
 }
 
-function loadData(type, year) {
+async function loadData(type, year) {
+    const key = getStorageKey(type, year);
     try {
-        const raw = localStorage.getItem(getStorageKey(type, year));
+        const response = await fetch(`/api/data/${key}`);
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (e) {
+        console.log('Backend not available, falling back to localStorage');
+    }
+    try {
+        const raw = localStorage.getItem(key);
         return raw ? JSON.parse(raw) : {};
     } catch (e) {
         console.error('Error loading data', e);
@@ -110,12 +119,22 @@ function loadData(type, year) {
     }
 }
 
-function saveData(type, year, data) {
+async function saveData(type, year, data) {
+    const key = getStorageKey(type, year);
     try {
-        localStorage.setItem(getStorageKey(type, year), JSON.stringify(data));
-        return true;
+        localStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
-        console.error('Error saving data', e);
+        console.error('Error saving to localStorage', e);
+    }
+    try {
+        const response = await fetch(`/api/data/${key}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return response.ok;
+    } catch (e) {
+        console.log('Backend not available, saved to localStorage only');
         return false;
     }
 }
@@ -192,9 +211,9 @@ function initTrackerPage() {
         return options ? options.find(o => o.value == value) : null;
     }
 
-    function render() {
+    async function render() {
         const year = parseInt(yearSelect.value, 10);
-        currentData = loadData(type, year);
+        currentData = await loadData(type, year);
         grid.innerHTML = '';
 
         let markedCount = 0;
@@ -348,7 +367,7 @@ function initTrackerPage() {
         }
     }
 
-    function autoSave() {
+    async function autoSave() {
         const year = parseInt(yearSelect.value, 10);
         const cleaned = {};
         for (const [key, value] of Object.entries(currentData)) {
@@ -356,7 +375,7 @@ function initTrackerPage() {
                 cleaned[key] = value;
             }
         }
-        const ok = saveData(type, year, cleaned);
+        const ok = await saveData(type, year, cleaned);
         if (ok) flashStatus('save-status', '✨ Saved automatically');
     }
 
@@ -376,9 +395,9 @@ function initHighlightsPage() {
     const type = 'daily-highlights';
     let currentData = {};
 
-    function render() {
+    async function render() {
         const year = parseInt(yearSelect.value, 10);
-        currentData = loadData(type, year);
+        currentData = await loadData(type, year);
         grid.innerHTML = '';
 
         let entryCount = 0;
@@ -448,9 +467,9 @@ function initHighlightsPage() {
     let saveTimeout = null;
     function debouncedAutoSave() {
         clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
+        saveTimeout = setTimeout(async () => {
             const year = parseInt(yearSelect.value, 10);
-            const ok = saveData(type, year, currentData);
+            const ok = await saveData(type, year, currentData);
             if (ok) flashStatus('save-status', '✨ Saved automatically');
         }, 800);
     }
