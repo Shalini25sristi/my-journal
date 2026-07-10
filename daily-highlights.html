@@ -26,9 +26,9 @@
                 <label for="year-select">Year</label>
                 <select id="year-select"></select>
             </div>
-            <div class="stats-pill">
-                <span>📝</span>
-                <span id="entries-count">0 entries</span>
+            <div class="top-bar-right">
+                <span id="current-user" class="current-user"></span>
+                <button class="logout-btn" type="button">Logout 🚪</button>
             </div>
         </div>
 
@@ -53,6 +53,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             initHighlightsPage();
+            setupLogoutButtons();
+            showCurrentUser();
         });
     </script>
 </body>

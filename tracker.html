@@ -26,9 +26,9 @@
                 <label for="year-select">Year</label>
                 <select id="year-select"></select>
             </div>
-            <div class="stats-pill">
-                <span>✅</span>
-                <span id="completion-count">0 / 365</span>
+            <div class="top-bar-right">
+                <span id="current-user" class="current-user"></span>
+                <button class="logout-btn" type="button">Logout 🚪</button>
             </div>
         </div>
 
@@ -56,6 +56,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             initTrackerPage();
+            setupLogoutButtons();
+            showCurrentUser();
         });
     </script>
 </body>

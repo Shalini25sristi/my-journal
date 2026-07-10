@@ -6,6 +6,9 @@ const MONTH_NAMES = [
 
 const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const CURRENT_USER_KEY = 'myjournal_current_user';
+const USERS_KEY = 'myjournal_users';
+
 const TRACKER_ORDER = [
     'rate-my-day',
     'physical-mental-health',
@@ -107,7 +110,98 @@ function getParam(name) {
 }
 
 function getStorageKey(type, year) {
-    return `myjournal_${type}_${year}`;
+    const user = getCurrentUser();
+    const userPart = user ? user.replace(/[^a-zA-Z0-9@._-]/g, '_') : 'guest';
+    return `myjournal_${userPart}_${type}_${year}`;
+}
+
+function getCurrentUser() {
+    try {
+        return localStorage.getItem(CURRENT_USER_KEY);
+    } catch (e) {
+        return null;
+    }
+}
+
+function setCurrentUser(email) {
+    try {
+        if (email) {
+            localStorage.setItem(CURRENT_USER_KEY, email);
+        } else {
+            localStorage.removeItem(CURRENT_USER_KEY);
+        }
+    } catch (e) {
+        console.error('Error setting current user', e);
+    }
+}
+
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function registerUser(email, password) {
+    const users = getUsers();
+    if (users[email]) {
+        return { success: false, message: 'An account with this email already exists. Please log in.' };
+    }
+    users[email] = { passwordHash: await hashPassword(password), createdAt: new Date().toISOString() };
+    saveUsers(users);
+    setCurrentUser(email);
+    return { success: true, message: 'Welcome! Your journal has been created ✨' };
+}
+
+async function loginUser(email, password) {
+    const users = getUsers();
+    if (!users[email]) {
+        return { success: false, message: 'No account found. Creating one for you...' };
+    }
+    const hash = await hashPassword(password);
+    if (users[email].passwordHash !== hash) {
+        return { success: false, message: 'Incorrect password. Please try again.' };
+    }
+    setCurrentUser(email);
+    return { success: true, message: 'Welcome back! 💗' };
+}
+
+function getUsers() {
+    try {
+        const raw = localStorage.getItem(USERS_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveUsers(users) {
+    try {
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    } catch (e) {
+        console.error('Error saving users', e);
+    }
+}
+
+function logoutUser() {
+    setCurrentUser(null);
+}
+
+function requireAuth() {
+    if (!getCurrentUser()) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return true;
+}
+
+function redirectIfLoggedIn() {
+    if (getCurrentUser()) {
+        window.location.href = 'index.html';
+        return true;
+    }
+    return false;
 }
 
 async function loadData(type, year) {
@@ -206,8 +300,48 @@ function setupTrackerNavigation(currentType) {
     }
 }
 
+/* ---------- Login page ---------- */
+function initLoginPage() {
+    if (redirectIfLoggedIn()) return;
+
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('login-message');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+            showLoginMessage(message, 'Please enter both email and password.', 'error');
+            return;
+        }
+
+        let result = await loginUser(email, password);
+        if (!result.success && result.message.includes('No account found')) {
+            result = await registerUser(email, password);
+        }
+
+        showLoginMessage(message, result.message, result.success ? 'success' : 'error');
+        if (result.success) {
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 600);
+        }
+    });
+}
+
+function showLoginMessage(el, text, type) {
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'login-message ' + type;
+}
+
 /* ---------- Tracker page ---------- */
 function initTrackerPage() {
+    if (!requireAuth()) return;
+
     const type = getParam('type');
     const config = TRACKER_CONFIG[type];
     const options = config?.options || null;
@@ -432,6 +566,8 @@ function isLeap(year) {
 
 /* ---------- Highlights page ---------- */
 function initHighlightsPage() {
+    if (!requireAuth()) return;
+
     const yearSelect = populateYearSelect('year-select');
     const grid = document.getElementById('highlights-grid');
 
@@ -519,4 +655,30 @@ function initHighlightsPage() {
 
     yearSelect.addEventListener('change', render);
     render();
+}
+
+
+/* ---------- Home page ---------- */
+function initHomePage() {
+    if (!requireAuth()) return;
+    setupLogoutButtons();
+    showCurrentUser();
+}
+
+function setupLogoutButtons() {
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoutUser();
+            window.location.href = 'login.html';
+        });
+    });
+}
+
+function showCurrentUser() {
+    const el = document.getElementById('current-user');
+    if (el) {
+        const user = getCurrentUser();
+        el.textContent = user ? `logged in as ${user}` : '';
+    }
 }

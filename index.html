@@ -23,6 +23,11 @@
     </div>
 
     <main class="home-container">
+        <div class="home-top-bar">
+            <span id="current-user" class="current-user"></span>
+            <button class="logout-btn" type="button">Logout 🚪</button>
+        </div>
+
         <header class="home-header">
             <div class="title-badges">
                 <span class="badge">🌸</span>
@@ -89,5 +94,10 @@
     </main>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initHomePage();
+        });
+    </script>
 </body>
 </html>
