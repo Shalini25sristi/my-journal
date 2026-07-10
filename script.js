@@ -6,6 +6,16 @@ const MONTH_NAMES = [
 
 const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const TRACKER_ORDER = [
+    'rate-my-day',
+    'physical-mental-health',
+    'study-log',
+    'sleep-log',
+    'novel-reading',
+    'self-care',
+    'physical-mental-care'
+];
+
 const TRACKER_CONFIG = {
     'rate-my-day': {
         title: '⭐ Rate My Day',
@@ -165,6 +175,32 @@ function flashStatus(elementId, message) {
     }, 1400);
 }
 
+function setupTrackerNavigation(currentType) {
+    const prevBtn = document.getElementById('prev-tracker');
+    const nextBtn = document.getElementById('next-tracker');
+    if (!prevBtn || !nextBtn) return;
+
+    const index = TRACKER_ORDER.indexOf(currentType);
+    const prevType = index > 0 ? TRACKER_ORDER[index - 1] : null;
+    const nextType = index >= 0 && index < TRACKER_ORDER.length - 1 ? TRACKER_ORDER[index + 1] : null;
+
+    if (prevType) {
+        prevBtn.href = `tracker.html?type=${prevType}`;
+        prevBtn.textContent = `← ${TRACKER_CONFIG[prevType].title}`;
+        prevBtn.style.display = 'inline-flex';
+    } else {
+        prevBtn.style.display = 'none';
+    }
+
+    if (nextType) {
+        nextBtn.href = `tracker.html?type=${nextType}`;
+        nextBtn.textContent = `${TRACKER_CONFIG[nextType].title} →`;
+        nextBtn.style.display = 'inline-flex';
+    } else {
+        nextBtn.style.display = 'none';
+    }
+}
+
 /* ---------- Tracker page ---------- */
 function initTrackerPage() {
     const type = getParam('type');
@@ -181,6 +217,8 @@ function initTrackerPage() {
     document.getElementById('tracker-title').textContent = config.title;
     document.getElementById('tracker-subtitle').textContent = config.subtitle;
     document.title = `${config.title.replace(/^[^\s]+\s/, '')} | My Journal`;
+
+    setupTrackerNavigation(type);
 
     const yearSelect = populateYearSelect('year-select');
     const grid = document.getElementById('calendar-grid');
