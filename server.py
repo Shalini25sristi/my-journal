@@ -77,9 +77,10 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     os.makedirs(DATA_DIR, exist_ok=True)
+    data_path = os.path.abspath(DATA_DIR)
     server = HTTPServer(('localhost', PORT), Handler)
     print(f'Server running at http://localhost:{PORT}')
-    print(f'Local data folder: ./{DATA_DIR}/')
+    print(f'All data is saved here: {data_path}')
     try:
         server.serve_forever()
     except KeyboardInterrupt:
