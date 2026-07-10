@@ -183,6 +183,7 @@ function setupTrackerNavigation(currentType) {
     const index = TRACKER_ORDER.indexOf(currentType);
     const prevType = index > 0 ? TRACKER_ORDER[index - 1] : null;
     const nextType = index >= 0 && index < TRACKER_ORDER.length - 1 ? TRACKER_ORDER[index + 1] : null;
+    const isLastTracker = index === TRACKER_ORDER.length - 1;
 
     if (prevType) {
         prevBtn.href = `tracker.html?type=${prevType}`;
@@ -195,6 +196,10 @@ function setupTrackerNavigation(currentType) {
     if (nextType) {
         nextBtn.href = `tracker.html?type=${nextType}`;
         nextBtn.textContent = `${TRACKER_CONFIG[nextType].title} →`;
+        nextBtn.style.display = 'inline-flex';
+    } else if (isLastTracker) {
+        nextBtn.href = 'daily-highlights.html';
+        nextBtn.textContent = '🌈 Daily Highlights →';
         nextBtn.style.display = 'inline-flex';
     } else {
         nextBtn.style.display = 'none';
