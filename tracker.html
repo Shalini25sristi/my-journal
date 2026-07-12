@@ -27,6 +27,7 @@
                 <select id="year-select"></select>
             </div>
             <div class="top-bar-right">
+                <button id="edit-options-btn" class="edit-btn" type="button">✏️ Edit Options</button>
                 <span id="current-user" class="current-user"></span>
                 <button class="logout-btn" type="button">Logout 🚪</button>
             </div>
@@ -51,6 +52,23 @@
             <section id="calendar-grid" class="year-grid"></section>
         </div>
     </main>
+
+    <div id="options-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card options-modal-card">
+            <h2>Edit Options</h2>
+            <p class="modal-subtitle">Customize up to 10 options for this page.</p>
+            <div id="options-editor" class="options-editor">
+                <!-- Option rows rendered dynamically -->
+            </div>
+            <button id="add-option-btn" class="add-option-btn" type="button">+ Add Option</button>
+            <p id="options-modal-message" class="modal-message"></p>
+            <div class="modal-actions">
+                <button id="options-modal-cancel" class="modal-btn secondary" type="button">Cancel</button>
+                <button id="options-modal-save" class="modal-btn primary" type="button">Save Options</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>

@@ -25,7 +25,10 @@
     <main class="home-container">
         <div class="home-top-bar">
             <span id="current-user" class="current-user"></span>
-            <button class="logout-btn" type="button">Logout 🚪</button>
+            <div class="home-top-actions">
+                <button id="edit-pages-btn" class="edit-btn" type="button">✏️ Edit Pages</button>
+                <button class="logout-btn" type="button">Logout 🚪</button>
+            </div>
         </div>
 
         <header class="home-header">
@@ -38,60 +41,36 @@
             <p class="subtitle">a cozy little space to track your days ✨</p>
         </header>
 
-        <section class="cards-grid">
-            <a href="tracker.html?type=rate-my-day" class="journal-card card-pink">
-                <span class="card-icon">⭐</span>
-                <h2>Rate My Day</h2>
-                <p>Mark how your day felt each day of the year.</p>
-            </a>
+        <div id="edit-mode-bar" class="edit-mode-bar" style="display: none;">
+            <span id="pages-count">0 / 12 pages</span>
+            <button id="add-page-btn" class="add-page-btn" type="button">+ New Page</button>
+            <button id="done-edit-btn" class="done-edit-btn" type="button">Done</button>
+        </div>
 
-            <a href="tracker.html?type=physical-mental-health" class="journal-card card-peach">
-                <span class="card-icon">🧘‍♀️</span>
-                <h2>Physical & Mental Health</h2>
-                <p>Track your wellness journey one checkbox at a time.</p>
-            </a>
-
-            <a href="tracker.html?type=study-log" class="journal-card card-lemon">
-                <span class="card-icon">📚</span>
-                <h2>Study Log</h2>
-                <p>Keep up with your daily learning goals.</p>
-            </a>
-
-            <a href="tracker.html?type=sleep-log" class="journal-card card-lavender">
-                <span class="card-icon">🌙</span>
-                <h2>Sleep Log</h2>
-                <p>Record restful nights and sleepy patterns.</p>
-            </a>
-
-            <a href="tracker.html?type=novel-reading" class="journal-card card-mint">
-                <span class="card-icon">📖</span>
-                <h2>Novel Reading</h2>
-                <p>Tick off every day you read a chapter or page.</p>
-            </a>
-
-            <a href="tracker.html?type=self-care" class="journal-card card-rose">
-                <span class="card-icon">🛁</span>
-                <h2>Self Care</h2>
-                <p>Celebrate the days you took care of you.</p>
-            </a>
-
-            <a href="tracker.html?type=physical-mental-care" class="journal-card card-sky">
-                <span class="card-icon">💪</span>
-                <h2>Physical & Mental Care</h2>
-                <p>Track your body and mind care routines.</p>
-            </a>
-
-            <a href="daily-highlights.html" class="journal-card card-dream">
-                <span class="card-icon">🌈</span>
-                <h2>Daily Highlights</h2>
-                <p>Jot down a few lines for every single date.</p>
-            </a>
+        <section id="cards-grid" class="cards-grid">
+            <!-- Pages rendered dynamically -->
         </section>
 
         <footer class="home-footer">
             <p>made with 💗 for your daily reflections</p>
         </footer>
     </main>
+
+    <div id="page-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card">
+            <h2 id="page-modal-title">Create New Page</h2>
+            <div class="form-group">
+                <label for="page-name-input">Page Name</label>
+                <input type="text" id="page-name-input" maxlength="100" placeholder="e.g. Water Intake">
+            </div>
+            <p id="page-modal-message" class="modal-message"></p>
+            <div class="modal-actions">
+                <button id="page-modal-cancel" class="modal-btn secondary" type="button">Cancel</button>
+                <button id="page-modal-save" class="modal-btn primary" type="button">Save</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>

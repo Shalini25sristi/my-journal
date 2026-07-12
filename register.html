@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | My Journal</title>
+    <title>Register | My Journal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,27 +27,31 @@
                     <span class="badge">🍃</span>
                     <span class="badge">🌙</span>
                 </div>
-                <h1>Welcome Back</h1>
-                <p class="subtitle">log in to continue your cozy journal ✨</p>
+                <h1>Create Your Journal</h1>
+                <p class="subtitle">sign up to start your cozy journal ✨</p>
             </div>
 
-            <form id="login-form" class="login-form">
+            <form id="register-form" class="login-form">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
                 </div>
-                <button type="submit" class="login-btn">Continue 💗</button>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="••••••••" required minlength="6">
+                </div>
+                <button type="submit" class="login-btn">Create Journal 🌱</button>
             </form>
 
-            <p id="login-message" class="login-message"></p>
+            <p id="register-message" class="login-message"></p>
 
             <div class="auth-switch">
-                <p class="login-hint">New here?</p>
-                <a href="register.html" class="auth-switch-btn">Create your journal 🌱</a>
+                <p class="login-hint">Already have a journal?</p>
+                <a href="login.html" class="auth-switch-btn secondary-switch">Log in here 🌷</a>
             </div>
         </div>
     </main>
@@ -55,7 +59,7 @@
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            initLoginPage();
+            initRegisterPage();
         });
     </script>
 </body>
