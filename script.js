@@ -2365,9 +2365,10 @@ function saveThemeMode(mode) {
 }
 
 function applyTheme(themeId, mode) {
-    document.body.setAttribute('data-theme', themeId);
-    document.body.setAttribute('data-mode', mode);
-    renderDecorations(themeId);
+    const validTheme = THEMES.find(t => t.id === themeId) || THEMES[0];
+    document.body.setAttribute('data-theme', validTheme.id);
+    document.body.setAttribute('data-mode', mode === 'night' ? 'night' : 'day');
+    renderDecorations(validTheme.id);
 }
 
 function renderDecorations(themeId) {
@@ -2412,8 +2413,9 @@ function openThemeModal() {
             <div class="theme-name">${theme.name}</div>
         `;
         option.addEventListener('click', () => {
+            const activeMode = getSavedThemeMode();
             saveTheme(theme.id);
-            applyTheme(theme.id, currentMode);
+            applyTheme(theme.id, activeMode);
             grid.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
             option.classList.add('active');
         });
