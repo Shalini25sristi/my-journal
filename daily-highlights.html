@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="themes.css">
 </head>
-<body>
+<body data-theme="candy-dreams" data-mode="day">
     <div class="bg-decoration">
         <span class="cloud cloud-1">☁️</span>
         <span class="cloud cloud-2">☁️</span>
@@ -27,8 +28,20 @@
                 <select id="year-select"></select>
             </div>
             <div class="top-bar-right">
-                <span id="current-user" class="current-user"></span>
-                <button class="logout-btn" type="button">Logout 🚪</button>
+                <div class="user-menu">
+                    <button id="avatar-btn" class="avatar-btn" type="button" aria-label="Open menu">
+                        <span id="avatar-initial" class="user-avatar">?</span>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown" style="display: none;">
+                        <a href="analysis.html">📊 Analysis</a>
+                        <a href="vision-board.html">🎯 Vision Board</a>
+                        <button id="edit-pages-btn" type="button">✏️ Edit Pages</button>
+                        <button id="theme-btn" type="button">🎨 Edit Themes</button>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="profile.html">👤 Profile</a>
+                        <button class="logout-btn-in-dropdown" type="button">Logout 🚪</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -39,6 +52,7 @@
 
         <div class="save-bar">
             <span id="save-status" class="save-status"></span>
+            <span id="streak-status" class="streak-status"></span>
         </div>
 
         <nav class="tracker-nav">
@@ -49,12 +63,26 @@
         <section id="highlights-grid" class="highlights-grid"></section>
     </main>
 
+    <div id="theme-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card theme-modal-card">
+            <h2>Choose Your Theme</h2>
+            <p class="modal-subtitle">Pick a vibe and switch between day & night.</p>
+            <div id="theme-grid" class="theme-grid"></div>
+            <div class="theme-actions">
+                <button id="day-night-toggle" class="day-night-toggle" type="button">Night mode</button>
+                <button id="theme-modal-close" class="modal-btn primary" type="button">Done</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setupThemeButtons();
             initHighlightsPage();
-            setupLogoutButtons();
-            showCurrentUser();
+            setupUserMenu();
         });
     </script>
 </body>

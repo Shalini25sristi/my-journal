@@ -1,0 +1,8 @@
+-- Add profile fields to users table
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS gender VARCHAR(20),
+    ADD COLUMN IF NOT EXISTS age INTEGER,
+    ADD COLUMN IF NOT EXISTS date_of_birth DATE,
+    ADD COLUMN IF NOT EXISTS profession VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS location VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS bio TEXT;

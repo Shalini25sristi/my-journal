@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis | My Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="themes.css">
+</head>
+<body data-theme="candy-dreams" data-mode="day">
+    <div class="bg-decoration">
+        <span class="cloud cloud-1">☁️</span>
+        <span class="cloud cloud-2">☁️</span>
+        <span class="sun sun-2">🌞</span>
+        <span class="star star-1">✨</span>
+        <span class="star star-2">🌟</span>
+        <span class="heart heart-1">💗</span>
+    </div>
+
+    <main class="page-container analysis-container">
+        <div class="top-bar">
+            <a href="index.html" class="back-btn">← Back home</a>
+            <div class="top-bar-right">
+                <div class="user-menu">
+                    <button id="avatar-btn" class="avatar-btn" type="button" aria-label="Open menu">
+                        <span id="avatar-initial" class="user-avatar">?</span>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown" style="display: none;">
+                        <a href="analysis.html">📊 Analysis</a>
+                        <a href="vision-board.html">🎯 Vision Board</a>
+                        <button id="edit-pages-btn" type="button">✏️ Edit Pages</button>
+                        <button id="theme-btn" type="button">🎨 Edit Themes</button>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="profile.html">👤 Profile</a>
+                        <button class="logout-btn-in-dropdown" type="button">Logout 🚪</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="page-header">
+            <h1>📊 Analysis</h1>
+            <p>Insights into your journal habits.</p>
+        </header>
+
+        <div class="analysis-controls">
+            <div class="control-group">
+                <label for="scope-select">Scope</label>
+                <select id="scope-select">
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="overall">Overall</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="page-select">Page</label>
+                <select id="page-select">
+                    <option value="all">All pages</option>
+                </select>
+            </div>
+            <div class="control-group" id="year-control">
+                <label for="year-select">Year</label>
+                <select id="year-select"></select>
+            </div>
+            <div class="control-group" id="month-control">
+                <label for="month-select">Month</label>
+                <select id="month-select">
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+            <div class="control-group" id="week-control">
+                <label for="week-select">Week</label>
+                <select id="week-select"></select>
+            </div>
+        </div>
+
+        <div id="analysis-loading" class="analysis-loading">Loading your insights...</div>
+
+        <section id="analysis-results" class="analysis-results" style="display: none;">
+            <div class="analysis-summary">
+                <div class="summary-card">
+                    <span class="summary-icon">📅</span>
+                    <span class="summary-label">Days tracked</span>
+                    <span id="total-days" class="summary-value">0</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-icon">🔥</span>
+                    <span class="summary-label">Current streak</span>
+                    <span id="current-streak" class="summary-value">0</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-icon">🏆</span>
+                    <span class="summary-label">Longest streak</span>
+                    <span id="longest-streak" class="summary-value">0</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-icon">⭐</span>
+                    <span class="summary-label">Most frequent</span>
+                    <span id="most-frequent" class="summary-value">—</span>
+                </div>
+            </div>
+
+            <div class="analysis-section">
+                <h2>Option Distribution</h2>
+                <div id="distribution-chart" class="bar-chart"></div>
+            </div>
+
+            <div class="analysis-section">
+                <h2>Monthly Trend</h2>
+                <div id="trend-chart" class="bar-chart"></div>
+            </div>
+
+            <div class="analysis-section" id="page-comparison-section">
+                <h2>Page Comparison</h2>
+                <div id="page-comparison-chart" class="bar-chart"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="theme-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card theme-modal-card">
+            <h2>Choose Your Theme</h2>
+            <p class="modal-subtitle">Pick a vibe and switch between day & night.</p>
+            <div id="theme-grid" class="theme-grid"></div>
+            <div class="theme-actions">
+                <button id="day-night-toggle" class="day-night-toggle" type="button">🌙</button>
+                <button id="theme-modal-close" class="modal-btn primary" type="button">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setupThemeButtons();
+            initAnalysisPage();
+            setupUserMenu();
+        });
+    </script>
+</body>
+</html>

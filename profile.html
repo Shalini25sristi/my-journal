@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | My Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="themes.css">
+</head>
+<body data-theme="candy-dreams" data-mode="day">
+    <div class="bg-decoration">
+        <span class="cloud cloud-1">☁️</span>
+        <span class="cloud cloud-2">☁️</span>
+        <span class="sun sun-2">🌞</span>
+        <span class="star star-1">✨</span>
+        <span class="star star-2">🌟</span>
+        <span class="heart heart-1">💗</span>
+    </div>
+
+    <main class="profile-container">
+        <div class="top-bar">
+            <a href="index.html" class="back-btn">← Back home</a>
+            <div class="top-bar-right">
+                <div class="user-menu">
+                    <button id="avatar-btn" class="avatar-btn" type="button" aria-label="Open menu">
+                        <span id="avatar-initial" class="user-avatar">?</span>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown" style="display: none;">
+                        <a href="analysis.html">📊 Analysis</a>
+                        <a href="vision-board.html">🎯 Vision Board</a>
+                        <button id="edit-pages-btn" type="button">✏️ Edit Pages</button>
+                        <button id="theme-btn" type="button">🎨 Edit Themes</button>
+                        <div class="user-dropdown-divider"></div>
+                        <a href="profile.html">👤 Profile</a>
+                        <button class="logout-btn-in-dropdown" type="button">Logout 🚪</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <header class="page-header">
+            <div class="profile-page-avatar" id="header-avatar">?</div>
+            <h1>Profile</h1>
+            <p>Manage your account and personal details.</p>
+        </header>
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <div id="profile-avatar" class="profile-avatar">?</div>
+                <div class="profile-header-info">
+                    <h1 id="profile-username">User</h1>
+                    <p id="profile-email">user@example.com</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="profile-form" class="profile-card">
+            <h2>✨ Personal Details</h2>
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="profile-username-input">Username</label>
+                    <input type="text" id="profile-username-input" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="profile-gender">Gender</label>
+                    <select id="profile-gender">
+                        <option value="">Prefer not to say</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="non-binary">Non-binary</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="profile-age">Age</label>
+                    <input type="number" id="profile-age" min="0" max="150">
+                </div>
+                <div class="form-group">
+                    <label for="profile-dob">Date of Birth</label>
+                    <input type="date" id="profile-dob">
+                </div>
+                <div class="form-group">
+                    <label for="profile-profession">Profession</label>
+                    <input type="text" id="profile-profession" maxlength="100" placeholder="e.g. Student, Designer">
+                </div>
+                <div class="form-group">
+                    <label for="profile-location">Location</label>
+                    <input type="text" id="profile-location" maxlength="100" placeholder="e.g. New Delhi, India">
+                </div>
+                <div class="form-group full-width">
+                    <label for="profile-bio">About You</label>
+                    <textarea id="profile-bio" maxlength="500" placeholder="A little about yourself..."></textarea>
+                </div>
+            </div>
+            <p id="profile-message" class="modal-message"></p>
+            <div class="profile-actions">
+                <button type="submit" class="modal-btn primary">Save Changes</button>
+            </div>
+        </form>
+
+        <form id="password-form" class="profile-card">
+            <h2>🔒 Change Password</h2>
+            <div class="profile-grid">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" required minlength="6">
+                </div>
+            </div>
+            <p id="password-message" class="modal-message"></p>
+            <div class="profile-actions">
+                <button type="submit" class="modal-btn primary">Update Password</button>
+            </div>
+        </form>
+    </main>
+
+    <div id="theme-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card theme-modal-card">
+            <h2>Choose Your Theme</h2>
+            <p class="modal-subtitle">Pick a vibe and switch between day & night.</p>
+            <div id="theme-grid" class="theme-grid"></div>
+            <div class="theme-actions">
+                <button id="day-night-toggle" class="day-night-toggle" type="button">Night mode</button>
+                <button id="theme-modal-close" class="modal-btn primary" type="button">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setupThemeButtons();
+            initProfilePage();
+            setupUserMenu();
+            setupLogoutButtons();
+        });
+    </script>
+</body>
+</html>

@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="themes.css">
 </head>
-<body>
+<body data-theme="candy-dreams" data-mode="day">
     <div class="bg-decoration">
         <span class="cloud cloud-1">☁️</span>
         <span class="cloud cloud-2">☁️</span>
@@ -33,11 +34,15 @@
 
             <form id="register-form" class="login-form">
                 <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="your_username" required minlength="3" maxlength="50">
+                </div>
+                <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Create Password</label>
                     <input type="password" id="password" name="password" placeholder="••••••••" required minlength="6">
                 </div>
                 <div class="form-group">
@@ -53,12 +58,29 @@
                 <p class="login-hint">Already have a journal?</p>
                 <a href="login.html" class="auth-switch-btn secondary-switch">Log in here 🌷</a>
             </div>
+
+            <button id="theme-btn" class="theme-btn floating-theme-btn" type="button">🎨 Edit Themes</button>
         </div>
     </main>
+
+    <div id="theme-modal" class="modal" style="display: none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card theme-modal-card">
+            <h2>Choose Your Theme</h2>
+            <p class="modal-subtitle">Pick a vibe and switch between day & night.</p>
+            <div id="theme-grid" class="theme-grid"></div>
+            <div class="theme-actions">
+                <button id="day-night-toggle" class="day-night-toggle" type="button">Night mode</button>
+                <button id="theme-modal-close" class="modal-btn primary" type="button">Done</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setupThemeButtons();
             initRegisterPage();
         });
     </script>

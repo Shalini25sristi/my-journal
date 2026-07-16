@@ -9,10 +9,124 @@ const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const CURRENT_USER_KEY = 'myjournal_current_user';
 const TOKEN_KEY = 'myjournal_token';
 const PAGES_CACHE_KEY = 'myjournal_pages_cache_v4';
+const THEME_KEY = 'myjournal_theme';
+const THEME_MODE_KEY = 'myjournal_theme_mode';
 
 const HIGHLIGHTS_PAGE_ID = 'daily-highlights';
 const MAX_PAGES = 12;
 const MAX_OPTIONS = 10;
+
+const THEMES = [
+    {
+        id: 'candy-dreams',
+        name: 'Candy Dreams',
+        preview: 'linear-gradient(135deg, #ffc8dd 0%, #e0c3fc 50%, #a0c4ff 100%)',
+        decorations: [
+            { class: 'cloud cloud-1', emoji: '☁️' },
+            { class: 'cloud cloud-2', emoji: '☁️' },
+            { class: 'cloud cloud-3', emoji: '🍬' },
+            { class: 'sun sun-2', emoji: '🌞' },
+            { class: 'sun sun-3', emoji: '🍭' },
+            { class: 'star star-1', emoji: '✨' },
+            { class: 'star star-2', emoji: '🌟' },
+            { class: 'star star-4', emoji: '🍩' },
+            { class: 'heart heart-1', emoji: '💗' },
+            { class: 'heart heart-2', emoji: '💖' },
+            { class: 'heart heart-4', emoji: '🧁' }
+        ]
+    },
+    {
+        id: 'ocean-breeze',
+        name: 'Ocean Breeze',
+        preview: 'linear-gradient(135deg, #e8f4ff 0%, #d4f1f4 50%, #b8e1ff 100%)',
+        decorations: [
+            { class: 'cloud cloud-1', emoji: '🌊' },
+            { class: 'cloud cloud-2', emoji: '🐚' },
+            { class: 'cloud cloud-4', emoji: '🐋' },
+            { class: 'sun sun-2', emoji: '🐟' },
+            { class: 'sun sun-3', emoji: '⭐' },
+            { class: 'star star-1', emoji: '🐠' },
+            { class: 'star star-2', emoji: '🦈' },
+            { class: 'star star-5', emoji: '🦀' },
+            { class: 'heart heart-1', emoji: '🐙' },
+            { class: 'heart heart-2', emoji: '🐡' },
+            { class: 'heart heart-4', emoji: '🦑' }
+        ]
+    },
+    {
+        id: 'forest-walk',
+        name: 'Forest Walk',
+        preview: 'linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 50%, #dcedc8 100%)',
+        decorations: [
+            { class: 'cloud cloud-1', emoji: '🌲' },
+            { class: 'cloud cloud-2', emoji: '🍃' },
+            { class: 'cloud cloud-3', emoji: '🌳' },
+            { class: 'sun sun-2', emoji: '🍄' },
+            { class: 'sun sun-3', emoji: '🌰' },
+            { class: 'star star-1', emoji: '🦌' },
+            { class: 'star star-2', emoji: '🦋' },
+            { class: 'star star-4', emoji: '🐿️' },
+            { class: 'heart heart-1', emoji: '🌿' },
+            { class: 'heart heart-2', emoji: '🌷' },
+            { class: 'heart heart-4', emoji: '🍁' }
+        ]
+    },
+    {
+        id: 'sunset-glow',
+        name: 'Sunset Glow',
+        preview: 'linear-gradient(135deg, #fff3e0 0%, #ffe0b2 50%, #ffccbc 100%)',
+        decorations: [
+            { class: 'cloud cloud-1', emoji: '🌅' },
+            { class: 'cloud cloud-2', emoji: '🌇' },
+            { class: 'cloud cloud-3', emoji: '☁️' },
+            { class: 'sun sun-2', emoji: '🌻' },
+            { class: 'sun sun-3', emoji: '🌞' },
+            { class: 'star star-1', emoji: '🦩' },
+            { class: 'star star-2', emoji: '🍊' },
+            { class: 'star star-5', emoji: '🌾' },
+            { class: 'heart heart-1', emoji: '🌋' },
+            { class: 'heart heart-2', emoji: '🍑' },
+            { class: 'heart heart-4', emoji: '🦋' }
+        ]
+    },
+    {
+        id: 'midnight-edge',
+        name: 'Midnight Edge',
+        preview: 'linear-gradient(135deg, #eceff1 0%, #cfd8dc 50%, #b0bec5 100%)',
+        decorations: [
+            { class: 'cloud cloud-1 shape-ring' },
+            { class: 'cloud cloud-2 shape-square' },
+            { class: 'cloud cloud-3 shape-hexagon' },
+            { class: 'sun sun-2 shape-dot' },
+            { class: 'sun sun-3 shape-pulse' },
+            { class: 'moon moon-1 shape-crescent' },
+            { class: 'star star-1 shape-line' },
+            { class: 'star star-2 shape-triangle' },
+            { class: 'star star-4 shape-zigzag' },
+            { class: 'heart heart-1 shape-plus' },
+            { class: 'heart heart-2 shape-diamond' },
+            { class: 'heart heart-4 shape-bar' }
+        ]
+    },
+    {
+        id: 'harmony',
+        name: 'Harmony',
+        preview: 'linear-gradient(135deg, #f3e5f5 0%, #e3f2fd 50%, #fce4ec 100%)',
+        decorations: [
+            { class: 'cloud cloud-1', emoji: '🌸' },
+            { class: 'cloud cloud-2', emoji: '🍃' },
+            { class: 'cloud cloud-4', emoji: '🕊️' },
+            { class: 'sun sun-2', emoji: '🌙' },
+            { class: 'sun sun-3', emoji: '☀️' },
+            { class: 'star star-1', emoji: '🌈' },
+            { class: 'star star-2', emoji: '💎' },
+            { class: 'star star-5', emoji: '✨' },
+            { class: 'heart heart-1', emoji: '⚖️' },
+            { class: 'heart heart-2', emoji: '🤝' },
+            { class: 'heart heart-4', emoji: '🌍' }
+        ]
+    }
+];
 
 function getParam(name) {
     const params = new URLSearchParams(window.location.search);
@@ -110,17 +224,17 @@ function redirectIfLoggedIn() {
 }
 
 /* ---------- API helpers ---------- */
-async function registerUser(email, password) {
+async function registerUser(username, email, password, confirmPassword) {
     try {
         const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, email, password, confirmPassword })
         });
 
         const result = await response.json();
         if (result.success) {
-            setCurrentUser(result.user.email);
+            setCurrentUser(result.user.username);
             setToken(result.token);
         }
         return result;
@@ -130,17 +244,17 @@ async function registerUser(email, password) {
     }
 }
 
-async function loginUser(email, password) {
+async function loginUser(username, password) {
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, password })
         });
 
         const result = await response.json();
         if (result.success) {
-            setCurrentUser(result.user.email);
+            setCurrentUser(result.user.username);
             setToken(result.token);
         }
         return result;
@@ -341,6 +455,87 @@ async function saveData(type, year, data) {
     }
 }
 
+function getDateKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function calculateCurrentStreak(data) {
+    const today = new Date();
+    let currentValue = null;
+    let startOffset = 0;
+
+    // Find the most recent non-empty value
+    for (let i = 0; i < 365; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = getDateKey(d);
+        if (data[key] !== undefined && data[key] !== null && data[key] !== '') {
+            currentValue = data[key];
+            startOffset = i;
+            break;
+        }
+    }
+
+    if (currentValue === null) return { streak: 0, value: null };
+
+    let streak = 1;
+    for (let i = startOffset + 1; i < 365; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = getDateKey(d);
+        if (data[key] === currentValue) {
+            streak++;
+        } else {
+            break;
+        }
+    }
+
+    return { streak, value: currentValue };
+}
+
+function calculateLongestStreak(data, value) {
+    let longest = 0;
+    let current = 0;
+    const today = new Date();
+
+    for (let i = 0; i < 365 * 2; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = getDateKey(d);
+        if (data[key] === value) {
+            current++;
+            longest = Math.max(longest, current);
+        } else {
+            current = 0;
+        }
+    }
+
+    return longest;
+}
+
+function calculateAnyStreak(data) {
+    const today = new Date();
+    let streak = 0;
+    for (let i = 0; i < 365; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        const key = getDateKey(d);
+        const value = data[key];
+        if (value !== undefined && value !== null && value.toString().trim() !== '') {
+            streak++;
+        } else {
+            break;
+        }
+    }
+    return streak;
+}
+
+function formatStreak(streak, label = 'day') {
+    if (streak === 0) return '';
+    const plural = streak === 1 ? label : `${label}s`;
+    return `🔥 ${streak} ${plural}`;
+}
+
 function populateYearSelect(selectId, startOffset = 5, endOffset = 5) {
     const select = document.getElementById(selectId);
     if (!select) return null;
@@ -383,12 +578,18 @@ function initRegisterPage() {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const username = document.getElementById('username').value.trim();
         const email = document.getElementById('email').value.trim().toLowerCase();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
 
-        if (!email || !password) {
-            showMessage(message, 'Please enter both email and password.', 'error');
+        if (!username || !email || !password || !confirmPassword) {
+            showMessage(message, 'Please fill in all fields.', 'error');
+            return;
+        }
+
+        if (username.length < 3) {
+            showMessage(message, 'Username must be at least 3 characters.', 'error');
             return;
         }
 
@@ -402,7 +603,7 @@ function initRegisterPage() {
             return;
         }
 
-        const result = await registerUser(email, password);
+        const result = await registerUser(username, email, password, confirmPassword);
         showMessage(message, result.message, result.success ? 'success' : 'error');
 
         if (result.success) {
@@ -427,15 +628,15 @@ function initLoginPage() {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const email = document.getElementById('email').value.trim().toLowerCase();
+        const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
 
-        if (!email || !password) {
-            showMessage(message, 'Please enter both email and password.', 'error');
+        if (!username || !password) {
+            showMessage(message, 'Please enter both username and password.', 'error');
             return;
         }
 
-        const result = await loginUser(email, password);
+        const result = await loginUser(username, password);
         showMessage(message, result.message, result.success ? 'success' : 'error');
 
         if (result.success) {
@@ -516,8 +717,6 @@ function getPageIcon(page) {
 
 function initHomePage() {
     if (!requireAuth()) return;
-    setupLogoutButtons();
-    showCurrentUser();
     renderHomePage();
 }
 
@@ -535,20 +734,27 @@ async function renderHomePage() {
     const pageModalSave = document.getElementById('page-modal-save');
     const pageModalCancel = document.getElementById('page-modal-cancel');
 
-    let isEditMode = false;
+    let isEditMode = new URLSearchParams(window.location.search).get('edit') === '1';
     let pages = [];
     let editingPageId = null;
+
+    if (isEditMode && editBtn) {
+        editBtn.textContent = '✅ Done';
+        editModeBar.style.display = 'flex';
+    }
 
     async function refreshPages() {
         const result = await loadPages(true);
         pages = result.pages || [];
         renderCards();
+        await renderCardStreaks();
     }
 
     function renderCards() {
         grid.innerHTML = '';
 
         pages.forEach((page, index) => {
+            const options = page.options || [];
             const card = document.createElement('a');
             card.href = `tracker.html?type=${encodeURIComponent(page.id)}`;
             card.className = `journal-card ${CARD_COLORS[index % CARD_COLORS.length]}`;
@@ -561,11 +767,17 @@ async function renderHomePage() {
             title.textContent = page.name;
 
             const desc = document.createElement('p');
-            desc.textContent = `${page.options.length} option${page.options.length === 1 ? '' : 's'} · click to track`;
+            desc.textContent = `${options.length} option${options.length === 1 ? '' : 's'} · click to track`;
+
+            const streak = document.createElement('span');
+            streak.className = 'card-streak';
+            streak.dataset.pageId = page.id;
+            streak.textContent = '';
 
             card.appendChild(icon);
             card.appendChild(title);
             card.appendChild(desc);
+            card.appendChild(streak);
 
             if (isEditMode) {
                 card.href = '#';
@@ -618,6 +830,16 @@ async function renderHomePage() {
             <p>Jot down a few lines for every single date.</p>
         `;
         grid.appendChild(highlightsCard);
+
+        if (pages.length === 0 && !isEditMode) {
+            const emptyState = document.createElement('div');
+            emptyState.className = 'empty-state';
+            emptyState.innerHTML = `
+                <p>No tracker pages yet.</p>
+                <p>Click <strong>✏️ Edit Pages</strong> to create your first page.</p>
+            `;
+            grid.appendChild(emptyState);
+        }
 
         if (pagesCount) {
             pagesCount.textContent = `${pages.length} / ${MAX_PAGES} pages`;
@@ -704,6 +926,22 @@ async function renderHomePage() {
     await refreshPages();
 }
 
+async function renderCardStreaks() {
+    const year = new Date().getFullYear();
+    const streakEls = document.querySelectorAll('.card-streak');
+    if (streakEls.length === 0) return;
+
+    for (const el of streakEls) {
+        const pageId = el.dataset.pageId;
+        if (!pageId) continue;
+        const data = await loadData(pageId, year);
+        const { streak } = calculateCurrentStreak(data);
+        if (streak > 0) {
+            el.textContent = `🔥 ${streak}`;
+        }
+    }
+}
+
 /* ---------- Tracker page ---------- */
 async function initTrackerPage() {
     if (!requireAuth()) return;
@@ -762,14 +1000,21 @@ async function initTrackerPage() {
     }
 
     let currentData = {};
+    let streakData = {};
 
     function getOption(value) {
         return options.find(o => String(o.value) === String(value));
     }
 
+    async function loadStreakData() {
+        const currentYear = new Date().getFullYear();
+        streakData = await loadData(pageId, currentYear);
+    }
+
     async function render() {
         const year = parseInt(yearSelect.value, 10);
         currentData = await loadData(pageId, year);
+        await loadStreakData();
         grid.innerHTML = '';
 
         let markedCount = 0;
@@ -859,6 +1104,22 @@ async function initTrackerPage() {
         }
 
         updateStats(markedCount, ratingSum, totalDays);
+        updateStreakStatus();
+    }
+
+    function updateStreakStatus() {
+        const streakEl = document.getElementById('streak-status');
+        if (!streakEl) return;
+
+        const { streak, value } = calculateCurrentStreak(streakData);
+        if (streak === 0) {
+            streakEl.textContent = '';
+            return;
+        }
+
+        const option = getOption(value);
+        const label = option ? option.label : value;
+        streakEl.textContent = `🔥 ${streak} day${streak === 1 ? '' : 's'} — ${label}`;
     }
 
     function updateStats(marked = null, sum = null, total = null) {
@@ -894,6 +1155,8 @@ async function initTrackerPage() {
         }
         const ok = await saveData(pageId, year, cleaned);
         if (ok) flashStatus('save-status', '✨ Saved automatically');
+        await loadStreakData();
+        updateStreakStatus();
     }
 
     yearSelect.addEventListener('change', render);
@@ -1082,6 +1345,879 @@ function isLeap(year) {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
 }
 
+/* ---------- Vision Board page ---------- */
+function initVisionBoardPage() {
+    if (!requireAuth()) return;
+
+    const timeframeSelect = document.getElementById('timeframe-select');
+    const targetSelect = document.getElementById('target-select');
+    const boardTitleInput = document.getElementById('board-title');
+    const saveTitleBtn = document.getElementById('save-title-btn');
+    const centerTitle = document.getElementById('center-title');
+    const centerPeriod = document.getElementById('center-period');
+    const boardItems = document.getElementById('board-items');
+    const itemCount = document.getElementById('item-count');
+    const addTextBtn = document.getElementById('add-text-btn');
+    const addImageBtn = document.getElementById('add-image-btn');
+
+    const textModal = document.getElementById('text-modal');
+    const textContent = document.getElementById('text-content');
+    const textSave = document.getElementById('text-modal-save');
+    const textCancel = document.getElementById('text-modal-cancel');
+    const textMessage = document.getElementById('text-modal-message');
+
+    const imageModal = document.getElementById('image-modal');
+    const imageFile = document.getElementById('image-file');
+    const imagePreview = document.getElementById('image-preview');
+    const imageSave = document.getElementById('image-modal-save');
+    const imageCancel = document.getElementById('image-modal-cancel');
+    const imageMessage = document.getElementById('image-modal-message');
+
+    if (!timeframeSelect) return;
+
+    let currentBoard = null;
+
+    function generateTargets(timeframe) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const targets = [];
+
+        if (timeframe === 'monthly') {
+            for (let i = 0; i <= 15; i++) {
+                const d = new Date(year, month + i, 1);
+                const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                const label = `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
+                targets.push({ value, label });
+            }
+        } else if (timeframe === 'quarterly') {
+            for (let i = 0; i <= 10; i++) {
+                const quarterMonth = month + (i * 3);
+                const d = new Date(year, quarterMonth, 1);
+                const q = Math.floor(d.getMonth() / 3) + 1;
+                const value = `${d.getFullYear()}-Q${q}`;
+                const label = `Q${q} ${d.getFullYear()}`;
+                targets.push({ value, label });
+            }
+        } else if (timeframe === 'halfyearly') {
+            for (let i = 0; i <= 8; i++) {
+                const halfMonth = month + (i * 6);
+                const d = new Date(year, halfMonth, 1);
+                const half = Math.floor(d.getMonth() / 6) + 1;
+                const value = `${d.getFullYear()}-H${half}`;
+                const label = `H${half} ${d.getFullYear()}`;
+                targets.push({ value, label });
+            }
+        } else if (timeframe === 'yearly') {
+            for (let i = 0; i <= 7; i++) {
+                const value = String(year + i);
+                targets.push({ value, label: value });
+            }
+        } else if (timeframe === '5year') {
+            const currentStart = Math.floor(year / 5) * 5;
+            for (let i = 0; i <= 4; i++) {
+                const start = currentStart + (i * 5);
+                const value = `${start}-${start + 4}`;
+                targets.push({ value, label: value });
+            }
+        } else if (timeframe === '10year') {
+            const currentStart = Math.floor(year / 10) * 10;
+            for (let i = 0; i <= 4; i++) {
+                const start = currentStart + (i * 10);
+                const value = `${start}-${start + 9}`;
+                targets.push({ value, label: value });
+            }
+        }
+
+        return targets;
+    }
+
+    function populateTargets() {
+        const timeframe = timeframeSelect.value;
+        const targets = generateTargets(timeframe);
+        const currentValue = targetSelect.value;
+        targetSelect.innerHTML = '';
+
+        targets.forEach(t => {
+            const option = document.createElement('option');
+            option.value = t.value;
+            option.textContent = t.label;
+            targetSelect.appendChild(option);
+        });
+
+        if (targets.some(t => t.value === currentValue)) {
+            targetSelect.value = currentValue;
+        }
+    }
+
+    function getTimeframeLabel(timeframe) {
+        const labels = {
+            monthly: 'Monthly',
+            quarterly: 'Quarterly',
+            halfyearly: 'Half Yearly',
+            yearly: 'Yearly',
+            '5year': '5 Years',
+            '10year': '10 Years'
+        };
+        return labels[timeframe] || timeframe;
+    }
+
+    async function loadBoard() {
+        const timeframe = timeframeSelect.value;
+        const targetDate = targetSelect.value;
+
+        try {
+            const response = await fetch(`/api/vision-boards/${encodeURIComponent(timeframe)}/${encodeURIComponent(targetDate)}`, {
+                headers: getAuthHeaders()
+            });
+
+            if (handleAuthError(response)) return;
+            const result = await response.json();
+            if (!result.success) return;
+
+            currentBoard = result.board;
+            boardTitleInput.value = currentBoard.title;
+            centerTitle.textContent = currentBoard.title;
+            centerPeriod.textContent = `${getTimeframeLabel(currentBoard.timeframe)} · ${currentBoard.targetDate}`;
+            itemCount.textContent = `${result.items.length} / 80 items`;
+            renderItems(result.items);
+        } catch (e) {
+            console.error('Load vision board failed', e);
+        }
+    }
+
+    function renderItems(items) {
+        boardItems.innerHTML = '';
+
+        if (items.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'empty-board';
+            empty.innerHTML = '<p>Add text and images to build your vision board ✨</p>';
+            boardItems.appendChild(empty);
+            return;
+        }
+
+        const isMobile = window.innerWidth < 768;
+        const cols = isMobile ? 4 : 8;
+        const rows = isMobile ? 24 : 12;
+        const center = isMobile ? { col: 0, row: 0, colSpan: 2, rowSpan: 2 } : { col: 2, row: 1, colSpan: 4, rowSpan: 2 };
+        const positions = generateGridPositions(items.length, cols, rows, center);
+
+        items.forEach((item, index) => {
+            const el = document.createElement('div');
+            const pos = positions[index];
+            el.className = `board-item ${item.item_type === 'text' ? 'text-item' : 'image-item'}`;
+            el.style.gridColumn = `${pos.col + 1} / span ${pos.colSpan}`;
+            el.style.gridRow = `${pos.row + 1} / span ${pos.rowSpan}`;
+
+            if (item.item_type === 'text') {
+                el.textContent = item.content;
+            } else {
+                const img = document.createElement('img');
+                img.src = item.content;
+                img.alt = 'Vision board image';
+                el.appendChild(img);
+            }
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-item-btn';
+            deleteBtn.textContent = '✕';
+            deleteBtn.type = 'button';
+            deleteBtn.title = 'Remove item';
+            deleteBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (confirm('Remove this item from your vision board?')) {
+                    await deleteItem(item.id);
+                }
+            });
+
+            el.appendChild(deleteBtn);
+            boardItems.appendChild(el);
+        });
+    }
+
+    function generateGridPositions(count, cols, rows, center) {
+        const positions = [];
+        const occupied = new Set();
+
+        // Mark center cells as occupied
+        for (let r = center.row; r < center.row + center.rowSpan; r++) {
+            for (let c = center.col; c < center.col + center.colSpan; c++) {
+                occupied.add(`${r},${c}`);
+            }
+        }
+
+        let row = 0;
+        let col = 0;
+        let direction = 1; // 1 = right, -1 = left
+
+        while (positions.length < count && row < rows) {
+            // For row-by-row snake placement
+            if (direction === 1 && col >= cols) {
+                row++;
+                direction = -1;
+                col = cols - 1;
+            } else if (direction === -1 && col < 0) {
+                row++;
+                direction = 1;
+                col = 0;
+            }
+
+            if (row >= rows) break;
+
+            if (!occupied.has(`${row},${col}`)) {
+                positions.push({ col, row, colSpan: 1, rowSpan: 1 });
+            }
+
+            col += direction;
+        }
+
+        return positions;
+    }
+
+    async function deleteItem(itemId) {
+        try {
+            const response = await fetch(`/api/vision-boards/items/${encodeURIComponent(itemId)}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            if (handleAuthError(response)) return;
+            const result = await response.json();
+            if (result.success) await loadBoard();
+        } catch (e) {
+            console.error('Delete vision board item failed', e);
+        }
+    }
+
+    async function saveTitle() {
+        if (!currentBoard) return;
+        const title = boardTitleInput.value.trim();
+        if (!title) return;
+
+        try {
+            const response = await fetch(`/api/vision-boards/${currentBoard.id}`, {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ title })
+            });
+            if (handleAuthError(response)) return;
+            const result = await response.json();
+            if (result.success) {
+                currentBoard.title = title;
+                centerTitle.textContent = title;
+                flashStatus('save-status', '✨ Title saved');
+            }
+        } catch (e) {
+            console.error('Save title failed', e);
+        }
+    }
+
+    async function addText() {
+        const content = textContent.value.trim();
+        if (!content) {
+            showMessage(textMessage, 'Please enter some text.', 'error');
+            return;
+        }
+        await addItem('text', content);
+        closeTextModal();
+    }
+
+    async function addImage() {
+        const file = imageFile.files[0];
+        if (!file) {
+            showMessage(imageMessage, 'Please select an image.', 'error');
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            showMessage(imageMessage, 'Image must be smaller than 5MB.', 'error');
+            return;
+        }
+
+        imageSave.disabled = true;
+        imageSave.textContent = 'Adding...';
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const result = await addItem('image', e.target.result);
+            imageSave.disabled = false;
+            imageSave.textContent = 'Add';
+            if (result) closeImageModal();
+        };
+        reader.onerror = () => {
+            imageSave.disabled = false;
+            imageSave.textContent = 'Add';
+            showMessage(imageMessage, 'Failed to read image. Please try again.', 'error');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function addItem(itemType, content) {
+        if (!currentBoard) return false;
+        try {
+            const response = await fetch(`/api/vision-boards/${currentBoard.id}/items`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ itemType, content })
+            });
+            if (handleAuthError(response)) return false;
+            const result = await response.json();
+            if (result.success) {
+                await loadBoard();
+                return true;
+            } else {
+                if (itemType === 'text') showMessage(textMessage, result.message || 'Failed to add.', 'error');
+                else showMessage(imageMessage, result.message || 'Failed to add.', 'error');
+                return false;
+            }
+        } catch (err) {
+            console.error('Add item failed', err);
+            if (itemType === 'text') showMessage(textMessage, 'Unable to connect. Please try again.', 'error');
+            else showMessage(imageMessage, 'Unable to connect. Please try again.', 'error');
+            return false;
+        }
+    }
+
+    function openTextModal() {
+        textContent.value = '';
+        textMessage.textContent = '';
+        textModal.style.display = 'flex';
+        textContent.focus();
+    }
+
+    function closeTextModal() {
+        textModal.style.display = 'none';
+    }
+
+    function openImageModal() {
+        imageFile.value = '';
+        imageMessage.textContent = '';
+        imageModal.style.display = 'flex';
+    }
+
+    function closeImageModal() {
+        imageModal.style.display = 'none';
+    }
+
+    // Event listeners
+    timeframeSelect.addEventListener('change', () => {
+        populateTargets();
+        setDefaultTarget();
+        loadBoard();
+    });
+    targetSelect.addEventListener('change', loadBoard);
+    saveTitleBtn.addEventListener('click', saveTitle);
+    boardTitleInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') saveTitle();
+    });
+
+    addTextBtn.addEventListener('click', openTextModal);
+    textSave.addEventListener('click', addText);
+    textCancel.addEventListener('click', closeTextModal);
+    textModal.querySelector('.modal-backdrop').addEventListener('click', closeTextModal);
+    textContent.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            addText();
+        }
+    });
+
+    addImageBtn.addEventListener('click', openImageModal);
+    imageSave.addEventListener('click', addImage);
+    imageCancel.addEventListener('click', closeImageModal);
+    imageModal.querySelector('.modal-backdrop').addEventListener('click', closeImageModal);
+    imageFile.addEventListener('change', () => {
+        const file = imageFile.files[0];
+        imagePreview.innerHTML = '';
+        imageMessage.textContent = '';
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            showMessage(imageMessage, 'Image must be smaller than 5MB.', 'error');
+            imageFile.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = 'Preview';
+            imagePreview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    populateTargets();
+    loadBoard();
+}
+
+/* ---------- Analysis page ---------- */
+function initAnalysisPage() {
+    if (!requireAuth()) return;
+
+    const scopeSelect = document.getElementById('scope-select');
+    const pageSelect = document.getElementById('page-select');
+    const yearSelect = document.getElementById('year-select');
+    const monthSelect = document.getElementById('month-select');
+    const weekSelect = document.getElementById('week-select');
+    const weekControl = document.getElementById('week-control');
+    const yearControl = document.getElementById('year-control');
+    const monthControl = document.getElementById('month-control');
+    const loadingEl = document.getElementById('analysis-loading');
+    const resultsEl = document.getElementById('analysis-results');
+    const pageComparisonSection = document.getElementById('page-comparison-section');
+
+    if (!scopeSelect) return;
+
+    let pages = [];
+    let allData = {};
+
+    function formatPageDisplayName(page) {
+        const icon = getPageIcon(page);
+        let name = page.name.trim();
+        if (name.startsWith(icon)) {
+            name = name.substring(icon.length).trim();
+        }
+        const formatted = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        return `${icon} ${formatted}`;
+    }
+
+    async function init() {
+        const result = await loadPages(true);
+        pages = result.pages || [];
+
+        populateTargets();
+        setDefaultTarget();
+
+        loadBoard();
+    }
+
+    function setDefaultTarget() {
+        const now = new Date();
+        const timeframe = timeframeSelect.value;
+        let defaultValue;
+
+        if (timeframe === 'monthly') {
+            defaultValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        } else if (timeframe === 'quarterly') {
+            const q = Math.floor(now.getMonth() / 3) + 1;
+            defaultValue = `${now.getFullYear()}-Q${q}`;
+        } else if (timeframe === 'halfyearly') {
+            const h = Math.floor(now.getMonth() / 6) + 1;
+            defaultValue = `${now.getFullYear()}-H${h}`;
+        } else if (timeframe === 'yearly') {
+            defaultValue = String(now.getFullYear());
+        } else if (timeframe === '5year') {
+            const start = Math.floor(now.getFullYear() / 5) * 5;
+            defaultValue = `${start}-${start + 4}`;
+        } else if (timeframe === '10year') {
+            const start = Math.floor(now.getFullYear() / 10) * 10;
+            defaultValue = `${start}-${start + 9}`;
+        }
+
+        if (defaultValue && Array.from(targetSelect.options).some(o => o.value === defaultValue)) {
+            targetSelect.value = defaultValue;
+        }
+    }
+
+    function populateWeekSelect() {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        weekSelect.innerHTML = '';
+
+        for (let weekOffset = 0; weekOffset < 12; weekOffset++) {
+            const weekEnd = new Date(currentDate);
+            weekEnd.setDate(currentDate.getDate() - (weekOffset * 7));
+            const weekStart = new Date(weekEnd);
+            weekStart.setDate(weekEnd.getDate() - 6);
+
+            const formatDate = (d) => `${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+            const option = document.createElement('option');
+            option.value = getDateKey(weekStart);
+            option.textContent = `${formatDate(weekStart)} – ${formatDate(weekEnd)}`;
+            if (weekOffset === 0) option.selected = true;
+            weekSelect.appendChild(option);
+        }
+    }
+
+    function getWeekRange(weekStartKey) {
+        const start = new Date(weekStartKey);
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        return { start, end };
+    }
+
+    function updateControls() {
+        const scope = scopeSelect.value;
+        if (scope === 'overall') {
+            yearControl.style.display = 'none';
+            monthControl.style.display = 'none';
+            weekControl.style.display = 'none';
+        } else if (scope === 'yearly') {
+            yearControl.style.display = 'flex';
+            monthControl.style.display = 'none';
+            weekControl.style.display = 'none';
+        } else if (scope === 'monthly') {
+            yearControl.style.display = 'flex';
+            monthControl.style.display = 'flex';
+            weekControl.style.display = 'none';
+        } else {
+            yearControl.style.display = 'none';
+            monthControl.style.display = 'none';
+            weekControl.style.display = 'flex';
+        }
+    }
+
+    async function loadAllData() {
+        const scope = scopeSelect.value;
+        const selectedYear = parseInt(yearSelect.value, 10);
+        const selectedPage = pageSelect.value;
+
+        allData = {};
+        let yearsToLoad;
+        if (scope === 'overall') {
+            yearsToLoad = getYearRange();
+        } else if (scope === 'weekly') {
+            const { start } = getWeekRange(weekSelect.value);
+            yearsToLoad = [start.getFullYear()];
+        } else {
+            yearsToLoad = [selectedYear];
+        }
+        const pagesToLoad = selectedPage === 'all' ? pages : pages.filter(p => p.id === selectedPage);
+
+        const promises = [];
+        for (const page of pagesToLoad) {
+            allData[page.id] = { page, years: {} };
+            for (const year of yearsToLoad) {
+                promises.push(
+                    loadData(page.id, year).then(data => {
+                        allData[page.id].years[year] = data;
+                    })
+                );
+            }
+        }
+        await Promise.all(promises);
+    }
+
+    function getYearRange() {
+        const currentYear = new Date().getFullYear();
+        const years = [];
+        for (let y = currentYear - 5; y <= currentYear; y++) {
+            years.push(y);
+        }
+        return years;
+    }
+
+    function getRelevantData() {
+        const scope = scopeSelect.value;
+        const selectedYear = parseInt(yearSelect.value, 10);
+        const selectedMonth = parseInt(monthSelect.value, 10);
+        const selectedPage = pageSelect.value;
+        const { start: weekStart, end: weekEnd } = scope === 'weekly' ? getWeekRange(weekSelect.value) : { start: null, end: null };
+
+        const relevant = [];
+        const pagesToUse = selectedPage === 'all' ? pages : pages.filter(p => p.id === selectedPage);
+
+        for (const page of pagesToUse) {
+            const pageData = allData[page.id];
+            if (!pageData) continue;
+
+            const entries = [];
+            for (const [year, data] of Object.entries(pageData.years)) {
+                for (const [date, value] of Object.entries(data)) {
+                    if (value === null || value === undefined || value === '') continue;
+                    const dateObj = new Date(date);
+                    const [y, m] = date.split('-').map(Number);
+                    if (scope === 'weekly' && (dateObj < weekStart || dateObj > weekEnd)) continue;
+                    if (scope === 'monthly' && (y !== selectedYear || m - 1 !== selectedMonth)) continue;
+                    if (scope === 'yearly' && y !== selectedYear) continue;
+                    entries.push({ date, value, year: y, month: m - 1, day: dateObj.getDate(), weekday: dateObj.getDay() });
+                }
+            }
+
+            relevant.push({ page, entries });
+        }
+
+        return relevant;
+    }
+
+    function calculateStreaksForData(entries) {
+        const data = {};
+        entries.forEach(e => data[e.date] = e.value);
+        const { streak } = calculateCurrentStreak(data);
+        const longest = calculateLongestStreak(data);
+        return { current: streak, longest };
+    }
+
+    function calculateLongestStreak(data) {
+        let longest = 0;
+        let current = 0;
+        const today = new Date();
+        for (let i = 0; i < 365 * 6; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+            const key = getDateKey(d);
+            if (data[key] !== undefined && data[key] !== null && data[key] !== '') {
+                current++;
+                longest = Math.max(longest, current);
+            } else {
+                current = 0;
+            }
+        }
+        return longest;
+    }
+
+    function getOptionCounts(entries, page) {
+        const counts = {};
+        const options = page.options || [];
+        options.forEach(opt => counts[opt.value] = { label: opt.label, value: opt.value, count: 0, color: opt.bg });
+
+        entries.forEach(e => {
+            const value = String(e.value);
+            if (counts[value]) {
+                counts[value].count++;
+            } else {
+                counts[value] = { label: value, value, count: 1, color: '#999' };
+            }
+        });
+
+        return Object.values(counts).filter(c => c.count > 0).sort((a, b) => b.count - a.count);
+    }
+
+    function getMonthlyTrend(entries) {
+        const months = {};
+        for (let i = 0; i < 12; i++) {
+            months[i] = { month: MONTH_NAMES[i], count: 0 };
+        }
+        entries.forEach(e => {
+            months[e.month].count++;
+        });
+        return Object.values(months);
+    }
+
+    function getPageComparison(relevantData) {
+        return relevantData.map(({ page, entries }) => {
+            let name = page.name.trim();
+            const icon = getPageIcon(page);
+            if (name.startsWith(icon)) {
+                name = name.substring(icon.length).trim();
+            }
+            return {
+                name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase(),
+                count: entries.length,
+                icon
+            };
+        }).sort((a, b) => b.count - a.count);
+    }
+
+    async function runAnalysis() {
+        loadingEl.style.display = 'block';
+        resultsEl.style.display = 'none';
+
+        await loadAllData();
+        const relevantData = getRelevantData();
+
+        const allEntries = relevantData.flatMap(d => d.entries);
+        const totalDays = allEntries.length;
+
+        let currentStreak = 0;
+        let longestStreak = 0;
+        let mostFrequent = '—';
+
+        if (relevantData.length === 1) {
+            const { page, entries } = relevantData[0];
+            const streaks = calculateStreaksForData(entries);
+            currentStreak = streaks.current;
+            longestStreak = streaks.longest;
+            const counts = getOptionCounts(entries, page);
+            mostFrequent = counts.length > 0 ? counts[0].label : '—';
+        } else {
+            const streaks = relevantData.map(({ entries }) => calculateStreaksForData(entries));
+            currentStreak = streaks.reduce((sum, s) => sum + s.current, 0);
+            longestStreak = Math.max(...streaks.map(s => s.longest), 0);
+            const counts = getOptionCounts(allEntries, { options: [] });
+            mostFrequent = counts.length > 0 ? counts[0].label : '—';
+        }
+
+        document.getElementById('total-days').textContent = totalDays;
+        document.getElementById('current-streak').textContent = currentStreak;
+        document.getElementById('longest-streak').textContent = longestStreak;
+        document.getElementById('most-frequent').textContent = mostFrequent;
+
+        renderDistribution(relevantData);
+        renderTrend(relevantData);
+        renderPageComparison(relevantData);
+
+        pageComparisonSection.style.display = relevantData.length > 1 ? 'block' : 'none';
+
+        loadingEl.style.display = 'none';
+        resultsEl.style.display = 'block';
+    }
+
+    function renderDistribution(relevantData) {
+        const chart = document.getElementById('distribution-chart');
+        chart.innerHTML = '';
+
+        const entries = relevantData.flatMap(d => d.entries);
+        if (entries.length === 0) {
+            chart.innerHTML = '<div class="empty-analysis">No data for this period.</div>';
+            return;
+        }
+
+        const options = relevantData.length === 1 ? relevantData[0].page.options : [];
+        const counts = getOptionCounts(entries, { options });
+        const max = Math.max(...counts.map(c => c.count), 1);
+
+        counts.forEach(c => {
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            const pct = Math.round((c.count / entries.length) * 100);
+            row.innerHTML = `
+                <span class="bar-label" title="${c.label}">${c.label}</span>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: ${(c.count / max) * 100}%; background: ${c.color || ''}">
+                        <span class="bar-value">${pct}%</span>
+                    </div>
+                </div>
+                <span class="bar-count">${c.count}</span>
+            `;
+            chart.appendChild(row);
+        });
+    }
+
+    function renderTrend(relevantData) {
+        const chart = document.getElementById('trend-chart');
+        const title = chart.previousElementSibling;
+        chart.innerHTML = '';
+
+        const entries = relevantData.flatMap(d => d.entries);
+        if (entries.length === 0) {
+            chart.innerHTML = '<div class="empty-analysis">No data for this period.</div>';
+            if (title) title.textContent = scopeSelect.value === 'weekly' ? 'Daily Trend' : 'Monthly Trend';
+            return;
+        }
+
+        const scope = scopeSelect.value;
+        const trend = scope === 'weekly' ? getWeeklyTrend(entries) : getMonthlyTrend(entries);
+        const max = Math.max(...trend.map(t => t.count), 1);
+
+        if (title) title.textContent = scope === 'weekly' ? 'Daily Trend' : 'Monthly Trend';
+
+        trend.forEach(t => {
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            row.innerHTML = `
+                <span class="bar-label">${t.label}</span>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: ${(t.count / max) * 100}%">
+                        <span class="bar-value">${t.count}</span>
+                    </div>
+                </div>
+                <span class="bar-count">${t.count}</span>
+            `;
+            chart.appendChild(row);
+        });
+    }
+
+    function getWeeklyTrend(entries) {
+        const { start } = getWeekRange(weekSelect.value);
+        const days = [];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            days.push({ label: dayNames[d.getDay()], count: 0, key: getDateKey(d) });
+        }
+        entries.forEach(e => {
+            const day = days.find(d => d.key === e.date);
+            if (day) day.count++;
+        });
+        return days;
+    }
+
+    function renderPageComparison(relevantData) {
+        const chart = document.getElementById('page-comparison-chart');
+        chart.innerHTML = '';
+
+        const comparison = getPageComparison(relevantData);
+        const max = Math.max(...comparison.map(c => c.count), 1);
+
+        comparison.forEach(c => {
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            row.innerHTML = `
+                <span class="bar-label">${c.icon} ${c.name}</span>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: ${(c.count / max) * 100}%">
+                        <span class="bar-value">${c.count}</span>
+                    </div>
+                </div>
+                <span class="bar-count">${c.count}</span>
+            `;
+            chart.appendChild(row);
+        });
+    }
+
+    function formatPageDisplayName(page) {
+        const icon = getPageIcon(page);
+        let name = page.name.trim();
+        if (name.startsWith(icon)) {
+            name = name.substring(icon.length).trim();
+        }
+        const formatted = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        return `${icon} ${formatted}`;
+    }
+
+    async function init() {
+        populateYearSelect('year-select');
+        populateWeekSelect();
+        monthSelect.value = new Date().getMonth();
+        yearSelect.value = new Date().getFullYear();
+
+        const result = await loadPages(true);
+        pages = result.pages || [];
+
+        pages.forEach(page => {
+            const option = document.createElement('option');
+            option.value = page.id;
+            option.textContent = formatPageDisplayName(page);
+            pageSelect.appendChild(option);
+        });
+
+        updateControls();
+        await runAnalysis();
+    }
+
+    function populateWeekSelect() {
+        const currentDate = new Date();
+        weekSelect.innerHTML = '';
+
+        for (let weekOffset = 0; weekOffset < 12; weekOffset++) {
+            const weekEnd = new Date(currentDate);
+            weekEnd.setDate(currentDate.getDate() - (weekOffset * 7));
+            const weekStart = new Date(weekEnd);
+            weekStart.setDate(weekEnd.getDate() - 6);
+
+            const formatDate = (d) => `${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+            const option = document.createElement('option');
+            option.value = getDateKey(weekStart);
+            option.textContent = `${formatDate(weekStart)} – ${formatDate(weekEnd)}`;
+            if (weekOffset === 0) option.selected = true;
+            weekSelect.appendChild(option);
+        }
+    }
+
+    scopeSelect.addEventListener('change', () => {
+        updateControls();
+        runAnalysis();
+    });
+    pageSelect.addEventListener('change', runAnalysis);
+    yearSelect.addEventListener('change', runAnalysis);
+    monthSelect.addEventListener('change', runAnalysis);
+    weekSelect.addEventListener('change', runAnalysis);
+
+    init();
+}
+
 /* ---------- Highlights page ---------- */
 function initHighlightsPage() {
     if (!requireAuth()) return;
@@ -1091,10 +2227,17 @@ function initHighlightsPage() {
 
     const type = HIGHLIGHTS_PAGE_ID;
     let currentData = {};
+    let streakData = {};
+
+    async function loadStreakData() {
+        const currentYear = new Date().getFullYear();
+        streakData = await loadData(type, currentYear);
+    }
 
     async function render() {
         const year = parseInt(yearSelect.value, 10);
         currentData = await loadData(type, year);
+        await loadStreakData();
         grid.innerHTML = '';
 
         let entryCount = 0;
@@ -1150,6 +2293,14 @@ function initHighlightsPage() {
         }
 
         updateStats(entryCount);
+        updateStreakStatus();
+    }
+
+    function updateStreakStatus() {
+        const streakEl = document.getElementById('streak-status');
+        if (!streakEl) return;
+        const streak = calculateAnyStreak(streakData);
+        streakEl.textContent = streak > 0 ? `🔥 ${streak} day${streak === 1 ? '' : 's'} of highlights` : '';
     }
 
     function updateStats(count = null) {
@@ -1174,6 +2325,8 @@ function initHighlightsPage() {
             }
             const ok = await saveData(type, year, cleaned);
             if (ok) flashStatus('save-status', '✨ Saved automatically');
+            await loadStreakData();
+            updateStreakStatus();
         }, 800);
     }
 
@@ -1182,8 +2335,127 @@ function initHighlightsPage() {
 }
 
 /* ---------- Shared UI helpers ---------- */
+/* ---------- Theme system ---------- */
+function getSavedTheme() {
+    try {
+        return localStorage.getItem(THEME_KEY) || 'candy-dreams';
+    } catch (e) {
+        return 'candy-dreams';
+    }
+}
+
+function getSavedThemeMode() {
+    try {
+        return localStorage.getItem(THEME_MODE_KEY) || 'day';
+    } catch (e) {
+        return 'day';
+    }
+}
+
+function saveTheme(themeId) {
+    try {
+        localStorage.setItem(THEME_KEY, themeId);
+    } catch (e) {}
+}
+
+function saveThemeMode(mode) {
+    try {
+        localStorage.setItem(THEME_MODE_KEY, mode);
+    } catch (e) {}
+}
+
+function applyTheme(themeId, mode) {
+    document.body.setAttribute('data-theme', themeId);
+    document.body.setAttribute('data-mode', mode);
+    renderDecorations(themeId);
+}
+
+function renderDecorations(themeId) {
+    const container = document.querySelector('.bg-decoration');
+    if (!container) return;
+
+    const theme = THEMES.find(t => t.id === themeId) || THEMES[0];
+    container.innerHTML = '';
+
+    theme.decorations.forEach(decor => {
+        const span = document.createElement('span');
+        span.className = decor.class;
+        if (decor.emoji) {
+            span.textContent = decor.emoji;
+        }
+        container.appendChild(span);
+    });
+}
+
+function initTheme() {
+    const savedTheme = getSavedTheme();
+    const savedMode = getSavedThemeMode();
+    applyTheme(savedTheme, savedMode);
+}
+
+function openThemeModal() {
+    const modal = document.getElementById('theme-modal');
+    const grid = document.getElementById('theme-grid');
+    const toggle = document.getElementById('day-night-toggle');
+    const closeBtn = document.getElementById('theme-modal-close');
+    if (!modal || !grid) return;
+
+    const currentTheme = getSavedTheme();
+    const currentMode = getSavedThemeMode();
+
+    grid.innerHTML = '';
+    THEMES.forEach(theme => {
+        const option = document.createElement('div');
+        option.className = `theme-option ${theme.id === currentTheme ? 'active' : ''}`;
+        option.innerHTML = `
+            <div class="theme-preview" style="background: ${theme.preview}"></div>
+            <div class="theme-name">${theme.name}</div>
+        `;
+        option.addEventListener('click', () => {
+            saveTheme(theme.id);
+            applyTheme(theme.id, currentMode);
+            grid.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+            option.classList.add('active');
+        });
+        grid.appendChild(option);
+    });
+
+    function updateToggleText() {
+        const mode = getSavedThemeMode();
+        toggle.textContent = mode === 'day' ? '🌙' : '☀️';
+        toggle.title = mode === 'day' ? 'Switch to night mode' : 'Switch to day mode';
+    }
+
+    toggle.onclick = () => {
+        const newMode = getSavedThemeMode() === 'day' ? 'night' : 'day';
+        saveThemeMode(newMode);
+        applyTheme(getSavedTheme(), newMode);
+        updateToggleText();
+    };
+
+    closeBtn.onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    modal.querySelector('.modal-backdrop').onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    updateToggleText();
+    modal.style.display = 'flex';
+}
+
+function setupThemeButtons() {
+    document.querySelectorAll('#theme-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openThemeModal();
+        });
+    });
+}
+
 function setupLogoutButtons() {
-    document.querySelectorAll('.logout-btn').forEach(btn => {
+    document.querySelectorAll('.logout-btn, .logout-btn-in-dropdown').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             logoutUser();
@@ -1192,10 +2464,168 @@ function setupLogoutButtons() {
     });
 }
 
-function showCurrentUser() {
-    const el = document.getElementById('current-user');
-    if (el) {
-        const user = getCurrentUser();
-        el.textContent = user ? `logged in as ${user}` : '';
+function updateAvatarInitials() {
+    const user = getCurrentUser();
+    const initial = user ? user.charAt(0).toUpperCase() : '?';
+    document.querySelectorAll('#avatar-initial').forEach(el => {
+        el.textContent = initial;
+    });
+    const profileAvatar = document.getElementById('profile-avatar');
+    if (profileAvatar) profileAvatar.textContent = initial;
+    const headerAvatar = document.getElementById('header-avatar');
+    if (headerAvatar) headerAvatar.textContent = initial;
+}
+
+async function initProfilePage() {
+    if (!requireAuth()) return;
+
+    const usernameEl = document.getElementById('profile-username');
+    const emailEl = document.getElementById('profile-email');
+    const usernameInput = document.getElementById('profile-username-input');
+    const genderInput = document.getElementById('profile-gender');
+    const ageInput = document.getElementById('profile-age');
+    const dobInput = document.getElementById('profile-dob');
+    const professionInput = document.getElementById('profile-profession');
+    const locationInput = document.getElementById('profile-location');
+    const bioInput = document.getElementById('profile-bio');
+    const profileForm = document.getElementById('profile-form');
+    const passwordForm = document.getElementById('password-form');
+    const profileMessage = document.getElementById('profile-message');
+    const passwordMessage = document.getElementById('password-message');
+
+    async function loadProfile() {
+        try {
+            const response = await fetch('/api/auth/me', { headers: getAuthHeaders() });
+            if (handleAuthError(response)) return;
+            const result = await response.json();
+            if (!result.success) return;
+
+            const user = result.user;
+            if (usernameEl) usernameEl.textContent = user.username || '';
+            if (emailEl) emailEl.textContent = user.email || '';
+            if (usernameInput) usernameInput.value = user.username || '';
+            if (genderInput) genderInput.value = user.gender || '';
+            if (ageInput) ageInput.value = user.age !== null && user.age !== undefined ? user.age : '';
+            if (dobInput) dobInput.value = user.date_of_birth ? user.date_of_birth.slice(0, 10) : '';
+            if (professionInput) professionInput.value = user.profession || '';
+            if (locationInput) locationInput.value = user.location || '';
+            if (bioInput) bioInput.value = user.bio || '';
+            updateAvatarInitials();
+        } catch (err) {
+            console.error('Load profile failed:', err);
+        }
     }
+
+    if (profileForm) {
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showMessage(profileMessage, '', '');
+            const body = {
+                username: usernameInput.value,
+                gender: genderInput.value,
+                age: ageInput.value,
+                dateOfBirth: dobInput.value,
+                profession: professionInput.value,
+                location: locationInput.value,
+                bio: bioInput.value
+            };
+            try {
+                const response = await fetch('/api/auth/profile', {
+                    method: 'PUT',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(body)
+                });
+                if (handleAuthError(response)) return;
+                const result = await response.json();
+                if (result.success) {
+                    showMessage(profileMessage, 'Profile saved ✨', 'success');
+                    localStorage.setItem('journalUser', result.user.username);
+                    updateAvatarInitials();
+                    if (usernameEl) usernameEl.textContent = result.user.username;
+                } else {
+                    showMessage(profileMessage, result.message || 'Failed to save profile.', 'error');
+                }
+            } catch (err) {
+                console.error('Save profile failed:', err);
+                showMessage(profileMessage, 'Unable to save. Please try again.', 'error');
+            }
+        });
+    }
+
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showMessage(passwordMessage, '', '');
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword !== confirmPassword) {
+                showMessage(passwordMessage, 'New passwords do not match.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/password', {
+                    method: 'PUT',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify({ currentPassword, newPassword, confirmPassword })
+                });
+                if (handleAuthError(response)) return;
+                const result = await response.json();
+                if (result.success) {
+                    showMessage(passwordMessage, 'Password updated ✨', 'success');
+                    passwordForm.reset();
+                } else {
+                    showMessage(passwordMessage, result.message || 'Failed to update password.', 'error');
+                }
+            } catch (err) {
+                console.error('Update password failed:', err);
+                showMessage(passwordMessage, 'Unable to update password. Please try again.', 'error');
+            }
+        });
+    }
+
+    await loadProfile();
+}
+
+function setupUserMenu() {
+    updateAvatarInitials();
+    setupLogoutButtons();
+
+    document.querySelectorAll('#avatar-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = btn.parentElement.querySelector('#user-dropdown');
+            if (!dropdown) return;
+            const isOpen = dropdown.style.display === 'block';
+            document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
+            dropdown.style.display = isOpen ? 'none' : 'block';
+        });
+    });
+
+    document.querySelectorAll('#user-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('click', (e) => e.stopPropagation());
+    });
+
+    document.addEventListener('click', () => {
+        document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
+    });
+
+    document.querySelectorAll('#edit-pages-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+                document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
+                const editBtn = document.getElementById('edit-pages-btn');
+                if (editBtn) editBtn.click();
+            } else {
+                window.location.href = 'index.html?edit=1';
+            }
+        });
+    });
+}
+
+function showCurrentUser() {
+    updateAvatarInitials();
 }
