@@ -864,14 +864,18 @@ async function renderHomePage() {
         editingPageId = null;
     }
 
-    if (editBtn) {
-        editBtn.addEventListener('click', () => {
-            isEditMode = !isEditMode;
-            editBtn.textContent = isEditMode ? '✅ Done' : '✏️ Edit Pages';
-            editModeBar.style.display = isEditMode ? 'flex' : 'none';
-            renderCards();
-        });
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
+        editBtn.textContent = isEditMode ? '✅ Done' : '✏️ Edit Pages';
+        editModeBar.style.display = isEditMode ? 'flex' : 'none';
+        renderCards();
     }
+
+    if (editBtn) {
+        editBtn.addEventListener('click', toggleEditMode);
+    }
+
+    window.toggleHomeEditMode = toggleEditMode;
 
     if (doneEditBtn) {
         doneEditBtn.addEventListener('click', () => {
@@ -1384,14 +1388,14 @@ function initVisionBoardPage() {
         const targets = [];
 
         if (timeframe === 'monthly') {
-            for (let i = 0; i <= 15; i++) {
+            for (let i = 0; i <= 35; i++) {
                 const d = new Date(year, month + i, 1);
                 const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
                 const label = `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
                 targets.push({ value, label });
             }
         } else if (timeframe === 'quarterly') {
-            for (let i = 0; i <= 10; i++) {
+            for (let i = 0; i <= 19; i++) {
                 const quarterMonth = month + (i * 3);
                 const d = new Date(year, quarterMonth, 1);
                 const q = Math.floor(d.getMonth() / 3) + 1;
@@ -1400,7 +1404,7 @@ function initVisionBoardPage() {
                 targets.push({ value, label });
             }
         } else if (timeframe === 'halfyearly') {
-            for (let i = 0; i <= 8; i++) {
+            for (let i = 0; i <= 15; i++) {
                 const halfMonth = month + (i * 6);
                 const d = new Date(year, halfMonth, 1);
                 const half = Math.floor(d.getMonth() / 6) + 1;
@@ -1409,20 +1413,20 @@ function initVisionBoardPage() {
                 targets.push({ value, label });
             }
         } else if (timeframe === 'yearly') {
-            for (let i = 0; i <= 7; i++) {
+            for (let i = 0; i <= 14; i++) {
                 const value = String(year + i);
                 targets.push({ value, label: value });
             }
         } else if (timeframe === '5year') {
             const currentStart = Math.floor(year / 5) * 5;
-            for (let i = 0; i <= 4; i++) {
+            for (let i = 0; i <= 9; i++) {
                 const start = currentStart + (i * 5);
                 const value = `${start}-${start + 4}`;
                 targets.push({ value, label: value });
             }
         } else if (timeframe === '10year') {
             const currentStart = Math.floor(year / 10) * 10;
-            for (let i = 0; i <= 4; i++) {
+            for (let i = 0; i <= 9; i++) {
                 const start = currentStart + (i * 10);
                 const value = `${start}-${start + 9}`;
                 targets.push({ value, label: value });
@@ -2617,10 +2621,13 @@ function setupUserMenu() {
     document.querySelectorAll('#edit-pages-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
+            document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
             if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
-                document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
-                const editBtn = document.getElementById('edit-pages-btn');
-                if (editBtn) editBtn.click();
+                if (typeof window.toggleHomeEditMode === 'function') {
+                    window.toggleHomeEditMode();
+                } else {
+                    window.location.href = 'index.html?edit=1';
+                }
             } else {
                 window.location.href = 'index.html?edit=1';
             }

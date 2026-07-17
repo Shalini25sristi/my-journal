@@ -1115,7 +1115,7 @@ body {
 }
 
 .edit-btn {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--surface);
     border: 2px solid var(--lavender-dark);
     color: var(--text);
     padding: 8px 16px;
