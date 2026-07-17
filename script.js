@@ -871,10 +871,6 @@ async function renderHomePage() {
         renderCards();
     }
 
-    if (editBtn) {
-        editBtn.addEventListener('click', toggleEditMode);
-    }
-
     window.toggleHomeEditMode = toggleEditMode;
 
     if (doneEditBtn) {
