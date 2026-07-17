@@ -626,9 +626,49 @@ body {
 .save-bar {
     display: flex;
     justify-content: center;
+    align-items: center;
+    position: relative;
     gap: 16px;
     margin-bottom: 28px;
-    flex-wrap: wrap;
+    min-height: 40px;
+}
+
+.save-status {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.streak-status {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 6px 18px rgba(var(--shadow-color), 0.25);
+    animation: fadeIn 0.5s ease both;
+}
+
+@media (max-width: 640px) {
+    .save-bar {
+        justify-content: center;
+        padding-top: 28px;
+    }
+
+    .save-status {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
 
 .save-btn {
@@ -652,27 +692,6 @@ body {
 
 .save-btn:active {
     transform: translateY(0) scale(1);
-}
-
-.save-status {
-    display: flex;
-    align-items: center;
-    color: var(--text-light);
-    font-weight: 700;
-    font-size: 0.95rem;
-}
-
-.streak-status {
-    display: flex;
-    align-items: center;
-    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-    color: white;
-    padding: 8px 18px;
-    border-radius: 50px;
-    font-weight: 800;
-    font-size: 0.9rem;
-    box-shadow: 0 6px 18px rgba(var(--shadow-color), 0.25);
-    animation: fadeIn 0.5s ease both;
 }
 
 .card-streak {
