@@ -1308,7 +1308,10 @@ function setupOptionsEditor(page) {
         modal.style.display = 'none';
     }
 
-    editBtn.addEventListener('click', openModal);
+    editBtn.addEventListener('click', () => {
+        document.querySelectorAll('#user-dropdown').forEach(d => d.style.display = 'none');
+        openModal();
+    });
     cancelBtn.addEventListener('click', closeModal);
     modal.querySelector('.modal-backdrop').addEventListener('click', closeModal);
 
