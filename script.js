@@ -971,7 +971,7 @@ async function initTrackerPage() {
     document.getElementById('tracker-subtitle').textContent = options.length
         ? 'Click each day to mark it.'
         : 'This page has no options yet. Click "Edit Options" to add some.';
-    document.title = `${page.name.replace(/^[^\s]+\s/, '')} | My Journal`;
+    document.title = 'My Journal';
 
     setupTrackerNavigation(pageId, pages, pageIndex);
     setupOptionsEditor(page);
