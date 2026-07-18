@@ -459,6 +459,10 @@ function getDateKey(date) {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
+function isFutureDate(dateKey) {
+    return dateKey > getDateKey(new Date());
+}
+
 function calculateCurrentStreak(data) {
     const today = new Date();
     let currentValue = null;
@@ -1070,8 +1074,15 @@ async function initTrackerPage() {
                     btn.className = 'rating-btn';
                     btn.type = 'button';
                     btn.dataset.date = dateKey;
-                    btn.title = `${dateKey} — click to mark`;
+                    const future = isFutureDate(dateKey);
                     applyOptionStyle(btn, value, options);
+                    if (future) {
+                        btn.disabled = true;
+                        btn.classList.add('future-disabled');
+                        btn.title = `${dateKey} — future date, can't mark yet`;
+                    } else {
+                        btn.title = `${dateKey} — click to mark`;
+                    }
 
                     const number = document.createElement('span');
                     number.className = 'rating-day-number';
@@ -1079,6 +1090,7 @@ async function initTrackerPage() {
                     btn.appendChild(number);
 
                     btn.addEventListener('click', () => {
+                        if (isFutureDate(dateKey)) return;
                         const currentValue = currentData[dateKey];
                         const currentIdx = options.findIndex(o => String(o.value) === String(currentValue));
                         const nextIdx = currentIdx >= options.length - 1 ? -1 : currentIdx + 1;
@@ -2273,14 +2285,20 @@ function initHighlightsPage() {
 
                 const textarea = document.createElement('textarea');
                 textarea.rows = 2;
-                textarea.placeholder = 'What made today special?';
                 textarea.dataset.date = dateKey;
                 textarea.value = currentData[dateKey] || '';
-                textarea.addEventListener('input', () => {
-                    currentData[dateKey] = textarea.value;
-                    updateStats();
-                    debouncedAutoSave();
-                });
+                if (isFutureDate(dateKey)) {
+                    textarea.disabled = true;
+                    textarea.classList.add('future-disabled');
+                    textarea.placeholder = "Future date — can't add a highlight yet";
+                } else {
+                    textarea.placeholder = 'What made today special?';
+                    textarea.addEventListener('input', () => {
+                        currentData[dateKey] = textarea.value;
+                        updateStats();
+                        debouncedAutoSave();
+                    });
+                }
 
                 if (currentData[dateKey] && currentData[dateKey].trim()) {
                     entryCount++;
