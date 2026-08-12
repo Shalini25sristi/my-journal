@@ -2,6 +2,26 @@
 
 Cozy little space to track your days — trackers, daily highlights, vision boards, analysis. Node.js + Express + PostgreSQL backend, vanilla HTML/CSS/JS frontend.
 
+## Features
+
+- **Year-grid habit trackers** — click any day to cycle through your own rating options.
+- **Daily highlights** — free-text journal entry for every day of the year.
+- **Vision boards** — goal boards scoped to a future period (month, quarter, year, 5-year, 10-year).
+- **Analysis page** — read-only stats: streaks, distributions, and trends.
+- **User profiles** — edit account details and change your password.
+- **Themes & dark mode** — switch color themes and toggle day/night mode.
+- **Responsive layout** — works on desktop and smartphone screens.
+- **Future-date lock** — trackers and daily highlights cannot be edited for days after today.
+- **Branding** — notebook-emoji favicon and a "Created By Shalini Sristi" site footer on every page.
+
+## Documentation
+
+For the full technical write-up — architecture, frontend/backend stack, database schema (ERD), API reference, and auth flow — see [`DOCUMENTATION.md`](DOCUMENTATION.md).
+
+## Mobile App
+
+A React Native Expo mobile app is being developed on the [`mobile-app`](https://github.com/Shalini25sristi/my-journal/tree/mobile-app) branch. It reimplements the core journal experience for iOS/Android.
+
 ## Prerequisites
 
 - Node.js 18+
