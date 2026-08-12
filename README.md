@@ -2,6 +2,8 @@
 
 Cozy little space to track your days — trackers, daily highlights, vision boards, analysis. Node.js + Express + PostgreSQL backend, vanilla HTML/CSS/JS frontend.
 
+**Live site:** https://journiva.app
+
 ## Features
 
 - **Year-grid habit trackers** — click any day to cycle through your own rating options.
@@ -71,9 +73,9 @@ A React Native Expo mobile app is being developed on the [`mobile-app`](https://
 
 6. Open [http://localhost:8000](http://localhost:8000) and register an account.
 
-## Running with Docker
+## Running with Docker (local development)
 
-Bundles the app + Postgres in one `docker-compose.yml` — no local Node/Postgres install needed.
+Bundles the app + Postgres in one `docker-compose.yml` for local development — no local Node/Postgres install needed. The production site at https://journiva.app uses the same Docker image behind Caddy on Google Cloud.
 
 1. Copy the env template and set `POSTGRES_PASSWORD` and `JWT_SECRET`:
 
@@ -95,22 +97,38 @@ Bundles the app + Postgres in one `docker-compose.yml` — no local Node/Postgre
 
 Logs: `docker compose logs -f app`. Stop: `docker compose down` (add `-v` to also wipe the Postgres volume).
 
-## Deploying to DigitalOcean
+## Deploying to Google Cloud
 
-**Simplest: one Droplet running Docker Compose**
+The live deployment at https://journiva.app runs on Google Cloud (Compute Engine) using Docker Compose with Caddy as the TLS-terminating reverse proxy.
 
-1. Create a Droplet (Ubuntu, "Docker" marketplace image is easiest — comes with Docker + Compose preinstalled).
-2. `git clone` this repo onto the droplet.
-3. `cp .env.example .env` and set real `JWT_SECRET` / `POSTGRES_PASSWORD` values.
-4. `docker compose up -d --build`.
-5. Point a domain at the droplet's IP, put Caddy/Nginx (or DO's Load Balancer) in front for TLS on port 443 → 8000.
+**Simplest: one Compute Engine VM running Docker Compose + Caddy**
 
-**Alternative: DigitalOcean App Platform + Managed Database**
+1. Create a Google Compute Engine VM (e.g. `e2-medium`, Ubuntu LTS, allow HTTP/HTTPS traffic).
+2. Install Docker and Docker Compose on the VM.
+3. `git clone` this repo onto the VM.
+4. `cp .env.example .env` and set real `JWT_SECRET` / `POSTGRES_PASSWORD` values.
+5. `docker compose up -d --build` — this starts the app on port 8000 and runs migrations automatically.
+6. Point your domain's DNS A record at the VM's external IP (e.g. `journiva.app` → `<VM_EXTERNAL_IP>`).
+7. Install Caddy on the VM and create a `Caddyfile`:
 
-1. Create a Managed PostgreSQL cluster in DO, grab its connection string (it requires SSL — the app already handles this: `server/db.js` enables SSL when `NODE_ENV=production`).
-2. Create an App Platform app from this repo/Dockerfile — skip the `db` service in `docker-compose.yml` entirely (App Platform doesn't run docker-compose; it builds the `Dockerfile` directly as one component).
-3. Set env vars in the App Platform dashboard: `DATABASE_URL` (from the managed DB), `JWT_SECRET`, `NODE_ENV=production`, `PORT=8000`.
-4. Run migrations once after first deploy — either via App Platform's console/exec, or temporarily set the run command to `node server/migrations/run.js` and redeploy after.
+   ```
+   journiva.app {
+       reverse_proxy localhost:8000
+   }
+   ```
+
+8. Run `sudo caddy run --config /path/to/Caddyfile` (or set up Caddy as a systemd service). Caddy will automatically obtain and renew TLS certificates.
+
+**Alternative: Google Cloud Run + Cloud SQL**
+
+If you prefer a serverless/container-only deployment:
+
+1. Create a Cloud SQL PostgreSQL instance and grab its connection string (it requires SSL — the app already handles this: `server/db.js` enables SSL when `NODE_ENV=production`).
+2. Build the container from the repo `Dockerfile` and deploy to Cloud Run.
+3. Skip the `db` service in `docker-compose.yml`; Cloud Run does not run docker-compose.
+4. Set environment variables in the Cloud Run service: `DATABASE_URL` (from Cloud SQL), `JWT_SECRET`, `NODE_ENV=production`, `PORT=8000`.
+5. Run migrations once after first deploy — either via Cloud Run's exec feature, or temporarily override the container command to `node server/migrations/run.js` and redeploy.
+6. Map your custom domain (`journiva.app`) to the Cloud Run service in the Google Cloud Console; Google-managed TLS certificates are provided automatically.
 
 ## Notes
 
